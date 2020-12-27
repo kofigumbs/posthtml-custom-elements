@@ -5,7 +5,6 @@ const getCustomElements = (tree, visitedComponents, bodyScripts, bodyTemplates) 
   tree.walk(node => {
     if (node.tag && node.tag.includes('-') && !visitedComponents.has(node.tag)) {
       // find and parse corresponding element definition file
-      visitedComponents.add(node.tag);
       const componentPath = node.tag.replace('.', path.sep) + '.html';
       const componentFile = fs.readFileSync(componentPath, 'utf8');
       const componentScript = [];
@@ -18,7 +17,6 @@ const getCustomElements = (tree, visitedComponents, bodyScripts, bodyTemplates) 
       bodyScripts.push(`
         customElements.define('${node.tag}', class extends HTMLElement {
           connectedCallback() {
-            console.log('${node.tag}');
             this.attachShadow({ mode: 'open' }).appendChild(document.querySelector('[data-component="${node.tag}"]').content.cloneNode(true));
             ${componentScript}
           }
@@ -26,6 +24,7 @@ const getCustomElements = (tree, visitedComponents, bodyScripts, bodyTemplates) 
       `);
       bodyTemplates.push(componentTemplate);
       // recursive step
+      visitedComponents.add(node.tag);
       componentChildren.walk = tree.walk;
       componentChildren.parser = tree.parser;
       getCustomElements(componentChildren, visitedComponents, bodyScripts, bodyTemplates);
