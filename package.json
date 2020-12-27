@@ -1,0 +1,10 @@
+{
+  "name": "posthtml-custom-elements",
+  "private": true,
+  "scripts": {},
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "posthtml": "^0.15.1"
+  }
+}

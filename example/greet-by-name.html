@@ -1,0 +1,12 @@
+<h1 id="out"></h1>
+<input id="in" autofocus>
+
+<!-- this script is only loaded once (at the end of the body) but is evaluated for each occurance on the page -->
+<script>
+  const root = this.shadowRoot || document; // declare `root` such that it works standalone on in custom element
+  const in_ = root.getElementById('in');
+  const out = root.getElementById('out');
+  const listener = () => out.innerText = in_.value || '__type something__';
+  listener();
+  in_.addEventListener('input', listener);
+</script>
